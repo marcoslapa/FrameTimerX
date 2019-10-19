@@ -40,7 +40,6 @@ namespace FrameTimerX
             set { SetValue(OnStopProperty, value); }
         }
 
-
         public static readonly BindableProperty OnResumeProperty =
             BindableProperty.Create(nameof(OnResume), typeof(ICommand), typeof(FrameTimer), default(ICommand));
 
@@ -48,11 +47,6 @@ namespace FrameTimerX
             get { return (ICommand)GetValue(OnResumeProperty); }
             set { SetValue(OnResumeProperty, value); }
         }
-        //protected virtual void Started(FrameTimerEventArgs e)
-        //{
-        //    // ----- Event handler for value changes.
-        //    OnStart?.Execute(e);
-        //}
 
         protected virtual void WarningStarted(FrameTimerEventArgs e)
         {
@@ -63,7 +57,6 @@ namespace FrameTimerX
         protected virtual void Stopped(FrameTimerEventArgs e)
         {
             // ----- Event handler for value changes.
-            // OnStop?.Invoke(this, e);
             OnStop?.Execute(e);
         }
 
@@ -74,7 +67,7 @@ namespace FrameTimerX
         }
 
         public FrameTimer()
-        {
+        {            
             _innerLabel = new Label {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
@@ -85,14 +78,13 @@ namespace FrameTimerX
             this.Content = _innerLabel;
             this.TimerType = TimerFormats.HourMinuteSecond;
             this.AllowNegativeValues = false;
-            //this.TickVelocity = 1; // Velocity of 1 tick/sec
+            Application.Current.PageAppearing += Current_PageAppearing;
         }
-        
-        protected override void OnParentSet()
+
+        private void Current_PageAppearing(object sender, Page e)
         {
-            base.OnParentSet();
             if (IsAutoStarted) this.Start();
-        }
+        }    
 
         /// <summary>
         /// Defines the Clock's FontSize
@@ -240,12 +232,11 @@ namespace FrameTimerX
             }
         }
 
-        private double tickVelocity;
+        private int tickVelocity;
         /// <summary>
-        /// Defines the timer velocity in seconds 
-        /// (Note: You can put any valid double, sou the value 0.5 will be half of a second) 
+        /// Defines the timer velocity in miliseconds  
         /// </summary>
-        public double TickVelocity {
+        public int TickVelocity {
             get {
                 return this.tickVelocity;
             }
@@ -255,16 +246,16 @@ namespace FrameTimerX
         }
         public static readonly BindableProperty TickVelocityProperty = BindableProperty.Create(
                                                          propertyName: "TickVelocity",
-                                                         returnType: typeof(double),
+                                                         returnType: typeof(int),
                                                          declaringType: typeof(FrameTimer),
-                                                         defaultValue: 1.0,
+                                                         defaultValue: 1000,
                                                          defaultBindingMode: BindingMode.TwoWay,
                                                          propertyChanged: TickVelocityPropertyChanged);
 
         private static void TickVelocityPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var control = (FrameTimer)bindable;
-            control.TickVelocity = Convert.ToDouble(newValue);
+            control.TickVelocity = (int)newValue;
         }
 
 
@@ -553,7 +544,7 @@ namespace FrameTimerX
 
         private TimeSpan GetVelocity()
         {
-            return TimeSpan.FromSeconds(TickVelocity);
+            return TimeSpan.FromMilliseconds(TickVelocity);
         }
     }
 }

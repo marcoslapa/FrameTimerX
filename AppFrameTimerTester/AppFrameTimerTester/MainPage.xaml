@@ -32,14 +32,14 @@
         </StackLayout>
         <ftimer:FrameTimer x:Name="frtTimer2" Grid.Row="0" Grid.Column="1" BorderColor="Blue" 
                            HorizontalOptions="Center" VerticalOptions="Center"
-                           TickVelocity="0.5" TimerType="MinuteSecond" IsEndWarningEnabled="True"
+                           TickVelocity="500" TimerType="MinuteSecond" IsEndWarningEnabled="True"
                            IsAutoStarted="True" IsCountDown="True" EnableWarning="True"
                            StartingMinute="1" StartingSecond="0" StartWarningTime="30" WarningColor="LightBlue"
                            ClockFontAttributes="Bold" ClockFontSize="22"></ftimer:FrameTimer>
         <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center">
             <ftimer:FrameTimer x:Name="frtTimer3" BorderColor="Orange" BackgroundColor="LightSalmon" 
                            HorizontalOptions="Center" VerticalOptions="Center" HasShadow="True"
-                           TickVelocity="1.0" TimerType="HourMinuteSecond" WarningColor="OrangeRed" IsEndWarningEnabled="True"
+                           TickVelocity="300" TimerType="HourMinuteSecond" WarningColor="OrangeRed" IsEndWarningEnabled="True"
                            StartingHour="0" StartingMinute="1" StartingSecond="0" EndWarningTime="120"
                            IsCountDown="False" EnableWarning="True" StartWarningTime="90"
                            ClockFontAttributes="Bold" ClockFontSize="22"></ftimer:FrameTimer>
@@ -47,7 +47,7 @@
         </StackLayout>
         <ftimer:FrameTimer x:Name="frtTimer4" Grid.Row="1" Grid.Column="1" BorderColor="Brown" CornerRadius="35" HasShadow="True" 
                            HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="35" HeightRequest="35"
-                           TickVelocity="0.5" TimerType="IntegerCounter" 
+                           TickVelocity="800" TimerType="IntegerCounter" 
                            StartingCounter="30" StartWarningCount="10" 
                            IsAutoStarted="True" IsCountDown="True" WarningColor="LightYellow"
                            ClockFontAttributes="Bold" ClockFontSize="22" ClockFontTextColor="Brown"></ftimer:FrameTimer>

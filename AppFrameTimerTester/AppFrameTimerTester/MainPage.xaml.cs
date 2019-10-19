@@ -35,9 +35,13 @@ namespace AppFrameTimerTester
 
         private void frtTimer1_Started(object sender, FrameTimerX.FrameTimerEventArgs evt)
         {
-            Debug.WriteLine("##########################################################");
-            Debug.WriteLine("################### Timer Started! #######################");
-            Debug.WriteLine("##########################################################");
+            Debug.WriteLine(@"##########################################################");
+            Debug.WriteLine(@"###################                #######################");
+            Debug.WriteLine(@"###################     \    /     #######################");
+            Debug.WriteLine(@"################### Timer Started! #######################");
+            Debug.WriteLine(@"###################     /    \     #######################");
+            Debug.WriteLine(@"###################                #######################");
+            Debug.WriteLine(@"##########################################################");
         }
 
         private void ButtonSTART_Clicked(object sender, EventArgs e)

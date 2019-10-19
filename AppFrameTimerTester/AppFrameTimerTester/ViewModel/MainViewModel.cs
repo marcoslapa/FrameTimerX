@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using Xamarin.Forms;
 
 namespace AppFrameTimerTester.ViewModel
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         public MainViewModel()
         {
-            WarningColor1 = Color.BlueViolet;
-            Velocity = 0.5;
             StopCommand = new Command(StopTimer);
             StartCommand = new Command(StartTimer);
             ResumeCommand = new Command(ResumeTimer);
+            WarningColor1 = Color.Gold;
+            Velocity = 500;
         }
 
         private Color wc1;
@@ -27,11 +28,16 @@ namespace AppFrameTimerTester.ViewModel
             }
         }
 
-        private double vel;
+        private int vel;
 
-        public double Velocity {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public int Velocity {
             get { return vel; } 
-            set { vel = value; } 
+            set { 
+                vel = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Velocity"));
+            } 
         }
 
         public Command StopCommand { get; }

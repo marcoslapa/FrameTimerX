@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Marcos Lapa dos Santos</Authors>
+    <Company>XDevel</Company>
+    <PackageId>FrameTimerXDevel</PackageId>
+    <Version>0.1.0</Version>
+    <Description>FrameTimerX is a visual Frame with an authomatic Timer inside.</Description>
+    <Copyright>Marcos Lapa dos Santos</Copyright>
+    <PackageTags>timer, frametimer; counter,</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.848062" />
+  </ItemGroup>
+
+</Project>

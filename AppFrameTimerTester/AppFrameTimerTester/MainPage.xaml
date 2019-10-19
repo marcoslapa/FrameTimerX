@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ftimer="clr-namespace:FrameTimerX;assembly=FrameTimerX"   
+             xmlns:vm="clr-namespace:AppFrameTimerTester.ViewModel"
+             mc:Ignorable="d"
+             x:Class="AppFrameTimerTester.MainPage">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel></vm:MainViewModel>
+    </ContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <!-- Place new controls here -->
+        <StackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center">
+            <ftimer:FrameTimer x:Name="frtTimer1" Grid.Row="0" Grid.Column="0" BorderColor="Green"                            
+                           StartingCounter="100" StartWarningCount="30" TickVelocity="{Binding Velocity}" 
+                           TimerType="IntegerCounter" EndWarningCount="10" AllowNegativeValues="True"
+                           WarningColor="{Binding WarningColor1}" IsAutoStarted="True" IsCountDown="True" 
+                           OnStop="{Binding StopCommand}" OnResume="{Binding ResumeCommand}" OnStart="{Binding StartCommand}"
+                           ClockFontAttributes="Bold" ClockFontSize="22" EnableWarning="True" Started="frtTimer1_Started" ></ftimer:FrameTimer>
+            <Button x:Name="btnStopResume" Text="Stop" Clicked="ButtonSR_Clicked"></Button>
+        </StackLayout>
+        <ftimer:FrameTimer x:Name="frtTimer2" Grid.Row="0" Grid.Column="1" BorderColor="Blue" 
+                           HorizontalOptions="Center" VerticalOptions="Center"
+                           TickVelocity="0.5" TimerType="MinuteSecond" IsEndWarningEnabled="True"
+                           IsAutoStarted="True" IsCountDown="True" EnableWarning="True"
+                           StartingMinute="1" StartingSecond="0" StartWarningTime="30" WarningColor="LightBlue"
+                           ClockFontAttributes="Bold" ClockFontSize="22"></ftimer:FrameTimer>
+        <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center">
+            <ftimer:FrameTimer x:Name="frtTimer3" BorderColor="Orange" BackgroundColor="LightSalmon" 
+                           HorizontalOptions="Center" VerticalOptions="Center" HasShadow="True"
+                           TickVelocity="1.0" TimerType="HourMinuteSecond" WarningColor="OrangeRed" IsEndWarningEnabled="True"
+                           StartingHour="0" StartingMinute="1" StartingSecond="0" EndWarningTime="120"
+                           IsCountDown="False" EnableWarning="True" StartWarningTime="90"
+                           ClockFontAttributes="Bold" ClockFontSize="22"></ftimer:FrameTimer>
+            <Button x:Name="btnStart" Text="Start" Clicked="ButtonSTART_Clicked"></Button>
+        </StackLayout>
+        <ftimer:FrameTimer x:Name="frtTimer4" Grid.Row="1" Grid.Column="1" BorderColor="Brown" CornerRadius="35" HasShadow="True" 
+                           HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="35" HeightRequest="35"
+                           TickVelocity="0.5" TimerType="IntegerCounter" 
+                           StartingCounter="30" StartWarningCount="10" 
+                           IsAutoStarted="True" IsCountDown="True" WarningColor="LightYellow"
+                           ClockFontAttributes="Bold" ClockFontSize="22" ClockFontTextColor="Brown"></ftimer:FrameTimer>
+    </Grid>
+
+</ContentPage>

@@ -12,9 +12,10 @@ namespace FrameTimerX
         DateTime _innerTime;
         int _innerCount;
 
+        #region Bindable Events (Commands)
         // Defining the timer bindable events 
         public delegate void TimerHandler(object sender, FrameTimerEventArgs evt);
-        public event TimerHandler Started; 
+        public event TimerHandler Started;
 
         public static readonly BindableProperty OnStartProperty =
             BindableProperty.Create(nameof(OnStart), typeof(ICommand), typeof(FrameTimer), default(ICommand));
@@ -65,7 +66,9 @@ namespace FrameTimerX
             // ----- Event handler for value changes.
             OnResume?.Execute(e);
         }
+        #endregion
 
+        #region Component Initializing
         public FrameTimer()
         {            
             _innerLabel = new Label {
@@ -83,8 +86,67 @@ namespace FrameTimerX
 
         private void Current_PageAppearing(object sender, Page e)
         {
+            ResetClockOrCounter();
             if (IsAutoStarted) this.Start();
-        }    
+        }
+        #endregion
+
+        #region Bindable Properties
+        private Color warningColor = Color.Red;
+        /// <summary>
+        /// Defines the color of frame's background to alternate when the WarningTime is reached.
+        /// </summary>
+        public Color WarningColor {
+            get {
+                return warningColor;
+            }
+
+            set {
+                warningColor = value;
+            }
+        }
+
+        public static readonly BindableProperty WarningColorProperty = BindableProperty.Create(
+                                                 propertyName: "WarningColor",
+                                                 returnType: typeof(Color),
+                                                 declaringType: typeof(FrameTimer),
+                                                 defaultValue: Color.Red,
+                                                 defaultBindingMode: BindingMode.TwoWay,
+                                                 propertyChanged: WarningColorPropertyChanged);
+
+        private static void WarningColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var control = (FrameTimer)bindable;
+            control.WarningColor = (Color)newValue;
+        }
+
+
+        private int tickVelocity = 1000;
+        /// <summary>
+        /// Defines the timer velocity in miliseconds (Default is 1000 => 1 Second) 
+        /// </summary>
+        public int TickVelocity {
+            get {
+                return this.tickVelocity;
+            }
+            set {
+                this.tickVelocity = value;
+            }
+        }
+        public static readonly BindableProperty TickVelocityProperty = BindableProperty.Create(
+                                                         propertyName: "TickVelocity",
+                                                         returnType: typeof(int),
+                                                         declaringType: typeof(FrameTimer),
+                                                         defaultValue: 1000,
+                                                         defaultBindingMode: BindingMode.TwoWay,
+                                                         propertyChanged: TickVelocityPropertyChanged);
+
+        private static void TickVelocityPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var control = (FrameTimer)bindable;
+            control.TickVelocity = (int)newValue;
+        }
+        #endregion
 
         /// <summary>
         /// Defines the Clock's FontSize
@@ -121,38 +183,24 @@ namespace FrameTimerX
                 this._innerLabel.TextColor = value;
             }
         }
+
+        private Color _negativeTextColor = Color.Default;
+        /// <summary>
+        /// Defines the Clock's Font Textcolor property when a negative value is reached
+        /// </summary>
+        public Color ClockFontNegaviteTextColor {
+            get {
+                return this._negativeTextColor;
+            }
+            set {
+                this._negativeTextColor = value;
+            }
+        }
+
         public bool EnableWarning { get; set; }
 
-        private Color warningColor = Color.Red;
-        /// <summary>
-        /// Defines the color of frame's background to alternate when the WarningTime is reached.
-        /// </summary>
-        public Color WarningColor {
-            get {
-                return warningColor;
-            }
-
-            set {
-                warningColor = value;
-            }
-        }
-
-        public static readonly BindableProperty WarningColorProperty = BindableProperty.Create(
-                                                 propertyName: "WarningColor",
-                                                 returnType: typeof(Color),
-                                                 declaringType: typeof(FrameTimer),
-                                                 defaultValue: Color.White,
-                                                 defaultBindingMode: BindingMode.TwoWay,
-                                                 propertyChanged: WarningColorPropertyChanged);
-
-        private static void WarningColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var control = (FrameTimer)bindable;
-            control.WarningColor = (Color)newValue;
-        }
 
         private int startWarningTime = 0;
-
         /// <summary>
         /// Defines the time value (in seconds) to begin to alternate the WarningColor of the frame.
         /// </summary>
@@ -166,25 +214,25 @@ namespace FrameTimerX
             }
         }
 
-        /// <summary>
-        /// Defines if the warning should be stopped
-        /// </summary>
-        public bool IsEndWarningEnabled { get; set; }
+        ///// <summary>
+        ///// Defines if the warning should be stopped
+        ///// </summary>
+        //public bool IsEndWarningEnabled { get; set; }
 
-        private int endWarningTime = 0;
+        //private int endWarningTime = 0;
 
-        /// <summary>
-        /// Defines the value (in seconds) to stop the alternating WarningColor.
-        /// </summary>
-        public int EndWarningTime {
-            get {
-                return endWarningTime;
-            }
+        ///// <summary>
+        ///// Defines the value (in seconds) to stop the alternating WarningColor.
+        ///// </summary>
+        //public int EndWarningTime {
+        //    get {
+        //        return endWarningTime;
+        //    }
 
-            set {
-                endWarningTime = value;
-            }
-        }
+        //    set {
+        //        endWarningTime = value;
+        //    }
+        //}
 
         private int startWarningCount = 0;
 
@@ -201,20 +249,20 @@ namespace FrameTimerX
             }
         }
 
-        private int endWarningCount = 0;
+        //private int endWarningCount = 0;
 
-        /// <summary>
-        /// Defines the value of counter to stop the alternating WarningColor.
-        /// </summary>
-        public int EndWarningCount {
-            get {
-                return endWarningCount;
-            }
+        ///// <summary>
+        ///// Defines the value of counter to stop the alternating WarningColor.
+        ///// </summary>
+        //public int EndWarningCount {
+        //    get {
+        //        return endWarningCount;
+        //    }
 
-            set {
-                endWarningCount = value;
-            }
-        }
+        //    set {
+        //        endWarningCount = value;
+        //    }
+        //}
 
         private TimerFormats _timerType;
         /// <summary>
@@ -232,34 +280,18 @@ namespace FrameTimerX
             }
         }
 
-        private int tickVelocity;
+        private bool _allowNegativeValues = false;
         /// <summary>
-        /// Defines the timer velocity in miliseconds  
+        /// Allows the timer to show negative values
         /// </summary>
-        public int TickVelocity {
+        public bool AllowNegativeValues { 
             get {
-                return this.tickVelocity;
+                return _allowNegativeValues;
             }
             set {
-                this.tickVelocity = value;
-            }
+                _allowNegativeValues = value;
+            } 
         }
-        public static readonly BindableProperty TickVelocityProperty = BindableProperty.Create(
-                                                         propertyName: "TickVelocity",
-                                                         returnType: typeof(int),
-                                                         declaringType: typeof(FrameTimer),
-                                                         defaultValue: 1000,
-                                                         defaultBindingMode: BindingMode.TwoWay,
-                                                         propertyChanged: TickVelocityPropertyChanged);
-
-        private static void TickVelocityPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var control = (FrameTimer)bindable;
-            control.TickVelocity = (int)newValue;
-        }
-
-
-        public bool AllowNegativeValues { get; set; }
 
         int _startingSec, _startingMinute, _startingHour, _startingIntegerCounter;
         public int StartingCounter {
@@ -305,7 +337,7 @@ namespace FrameTimerX
         }
 
         /// <summary>
-        /// Defines if the timer is a countdown or not
+        /// Defines if the timer is a countdown, or not...
         /// </summary>
         public Boolean IsCountDown {
             get; set;
@@ -322,9 +354,9 @@ namespace FrameTimerX
 
         public void Resume()
         {
-            timerStopped = false;
             if(this.TimerType != TimerFormats.IntegerCounter)
             {
+                timerStopped = false;
                 if (this.OnResume != null)
                 {
                     Resumed(new FrameTimerEventArgs
@@ -337,7 +369,17 @@ namespace FrameTimerX
             }
             else
             {
-                if (this.OnResume != null)
+                if(this._innerCount == 0)
+                {
+                    if (AllowNegativeValues) 
+                        timerStopped = false;
+                }
+                else
+                {
+                    timerStopped = false;
+                }
+
+                if (this.OnResume != null && !timerStopped)
                 {
                     Resumed(new FrameTimerEventArgs
                     {
@@ -357,12 +399,13 @@ namespace FrameTimerX
         }
 
         bool alreadyStarted = false;
+        private bool negativeValueReached = false;
+
         public void Start()
         {
             // Starts only once
             if (!alreadyStarted)
-            {
-                ResetClockOrCounter();
+            {                
                 _defaultColor = this.BackgroundColor;
 
                 // Raise the Started event!
@@ -387,8 +430,17 @@ namespace FrameTimerX
                     {
                         if (TimerType == TimerFormats.IntegerCounter)
                         {
-                            if (this.IsCountDown) this._innerCount--;
-                            else this._innerCount++;
+                            if (this.IsCountDown)
+                                this._innerCount--;
+                            else
+                                this._innerCount++;
+                            
+                            // Check if is time to change the TextColor for NegativeTextColor
+                            if (!negativeValueReached && this._innerCount < 0 && this._negativeTextColor != Color.Default)
+                            {
+                                negativeValueReached = true;
+                                this._innerLabel.TextColor = this._negativeTextColor;
+                            }                                 
                         }
                         else
                         {
@@ -540,6 +592,7 @@ namespace FrameTimerX
             }
 
             this._warningStarted = false;
+            this._innerLabel.Text = GetTimerString();
         }
 
         private TimeSpan GetVelocity()

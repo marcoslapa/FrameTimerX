@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrameTimerX;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,45 +18,29 @@ namespace AppFrameTimerTester
         public MainPage()
         {
             InitializeComponent();
-        }
+        } 
 
-        private void ButtonSR_Clicked(object sender, EventArgs e)
+        private void btnStartStop_Clicked(object sender, EventArgs e)
         {
-            if (btnStopResume.Text == "Stop")
-            {
-                btnStopResume.Text = "Resume";
-                frtTimer1.Stop();
-            }
-            else
-            {
-                btnStopResume.Text = "Stop";
-                frtTimer1.Resume();
-            }
-        }
+            Button bt = sender as Button;
 
-        private void frtTimer1_Started(object sender, FrameTimerX.FrameTimerEventArgs evt)
-        {
-            Debug.WriteLine(@"##########################################################");
-            Debug.WriteLine(@"###################                #######################");
-            Debug.WriteLine(@"###################     \    /     #######################");
-            Debug.WriteLine(@"################### Timer Started! #######################");
-            Debug.WriteLine(@"###################     /    \     #######################");
-            Debug.WriteLine(@"###################                #######################");
-            Debug.WriteLine(@"##########################################################");
-        }
-
-        private void ButtonSTART_Clicked(object sender, EventArgs e)
-        {
-            if (btnStart.Text == "Start")
-            {
-                btnStart.Text = "Stop";
-                frtTimer3.Start();
-            }
-            else
-            {
-                frtTimer3.Stop();
-                btnStart.IsEnabled = false;
-            }
+            // Identifies the acion and frametimer by the button clicked
+            TimerAction action = bt.Text == "Start" ? TimerAction.Start : (bt.Text == "Stop" ? TimerAction.Stop : TimerAction.Resume);
+            bt.Text = bt.Text == "Start" ? "Stop" : (bt.Text == "Stop" ? "Resume" : "Stop");
+            FrameTimer fr = (bt == btnStartStopFTX1 ? frtTimer1 :
+                (bt == btnStartStopFTX2 ? frtTimer2 :
+                (bt == btnStartStopFTX3 ? frtTimer3 : 
+                (bt == btnStartStopFTX4 ? frtTimer4 : frtTimer5))));
+            
+            // Call the apropriated method from the frametimer 
+            if (action == TimerAction.Start)
+                fr.Start();
+            else if (action == TimerAction.Stop)
+                fr.Stop();
+            else 
+                fr.Resume();
         }
     }
+
+    enum TimerAction { Start, Stop, Resume };
 }

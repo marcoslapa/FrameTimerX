@@ -53,7 +53,11 @@ namespace AppFrameTimerTester.ViewModel
 
         public void StartTimer()
         {
-            Debug.WriteLine("########### Timer Started! ###########");
+            Debug.WriteLine(@"##########################################################");
+            Debug.WriteLine(@"###################     \    /     #######################");
+            Debug.WriteLine(@"################### Timer Started! #######################");
+            Debug.WriteLine(@"###################     /    \     #######################");
+            Debug.WriteLine(@"##########################################################");
         }
 
         public void ResumeTimer()

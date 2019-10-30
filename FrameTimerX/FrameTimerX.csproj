@@ -4,11 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Marcos Lapa dos Santos</Authors>
     <Company>XDevTeam</Company>
-    <PackageId>FrameTimerXDevTeam</PackageId>
+    <PackageId>FrameTimerX</PackageId>
     <Version>1.0.0</Version>
-    <Description>FrameTimerX is a visual Xamarn Forms Frame with an authomatic Timer inside.</Description>
+    <Description>FrameTimerX is a cross-platform Timer that runs inside a Xamarin Forms Frame.</Description>
     <Copyright>Marcos Lapa dos Santos</Copyright>
-    <PackageTags>timer, frametimer, counter, XDevTeam</PackageTags>
+    <PackageTags>timer frametimer counter XDevTeam</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>icon.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

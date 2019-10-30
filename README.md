@@ -8,7 +8,8 @@ Features:
   * Visual Warning (Frame BackgroundColor Changing)
   * Negative Numbers (IntegerCounter)
 
-General use:
+
+### General use:
 
 * Adding the component to your page:
 ```xml

@@ -65,3 +65,13 @@ A cross-platform Timer that runs inside a Xamarin.Forms.Frame
 ### Known Issues
 
  - Don't try to start a FrameTimerX on your **page's constructor** or **OnAppearing event**, use the **AutoStart** property instead.
+ - We can't put any componente inside the **FrameTimer**, because it'll became a simple Frame. 
+ For example, if we do something like this:
+ ```xml
+         <frt:FrameTimer IsAutoStarted="True" BorderColor="Black">
+            <StackLayout>
+                <Label Text="Test"></Label>
+            </StackLayout>
+        </frt:FrameTimer>
+```
+We'll get a simple **Frame** with a **Label "Test"** inside a **StackLayout**...

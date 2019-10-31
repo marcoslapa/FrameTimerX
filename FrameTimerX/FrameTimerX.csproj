@@ -10,9 +10,12 @@
     <Copyright>Marcos Lapa dos Santos</Copyright>
     <PackageTags>timer frametimer counter XDevTeam</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>icon.png</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl />
+    <RepositoryUrl>https://github.com/marcoslapa/FrameTimerX</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

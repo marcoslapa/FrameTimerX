@@ -82,19 +82,20 @@ FrameTimerX has the **Started**, **Stopped**, **Resumed** and **WarningStarted**
         {
             Debug.WriteLine("=======================================================");
             Debug.WriteLine("========== Simple Stopped Event raised!!!!! ===========");
-            Debug.WriteLine($"| Counter:{args.Counter} |");
-            Debug.WriteLine($"| Hour:{args.Hour} |");
-            Debug.WriteLine($"| Minute:{args.Minute} |");
-            Debug.WriteLine($"| Second:{args.Second} |");
+            Debug.WriteLine($"  ==> Counter:{args.Counter}");
+            Debug.WriteLine($"  ==> Hour:{args.Hour}");
+            Debug.WriteLine($"  ==> Minute:{args.Minute}");
+            Debug.WriteLine($"  ==> Second:{args.Second}");
             Debug.WriteLine("=======================================================");
         }
 ```
 
-### MVVM sample (Command)
+### MVVM (Bindable Command) sample
 
  Handling the WarningStarted event
  
- **XAML File**
+ **XAML File** (Remember to link your ViewModel to the Page Context before...)
+
 ```xml
         <ftimer:FrameTimer StartingCounter="90" TickVelocity="1000" TimerType="IntegerCounter"
                            EnableWarning="True" StartWarningTime="30"

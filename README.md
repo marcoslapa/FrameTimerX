@@ -97,10 +97,10 @@ FrameTimerX has the **Started**, **Stopped**, **Resumed** and **WarningStarted**
  **XAML File** (Remember to link your ViewModel to the Page Context before...)
 
 ```xml
-        <ftimer:FrameTimer StartingCounter="90" TickVelocity="1000" TimerType="IntegerCounter"
-                           EnableWarning="True" StartWarningTime="30"
-                           WarningColor="Orange" IsCountDown="True" 
-                           OnStartWarning="{Binding StartWarningCommmand} />
+        <frt:FrameTimer StartingCounter="90" TickVelocity="1000" TimerType="IntegerCounter"
+                        EnableWarning="True" StartWarningTime="30"
+                        WarningColor="Orange" IsCountDown="True" 
+                        OnStartWarning="{Binding StartWarningCommmand} />
 ```
 
 **CS File => ViewModel**

@@ -44,7 +44,7 @@
                            HorizontalOptions="Center" VerticalOptions="Center" HasShadow="True"
                            TickVelocity="300" TimerType="HourMinuteSecond" WarningColor="Green" 
                            EnableWarning="True" StartWarningTime="30" IsCountDown="True"
-                           StartingHour="0" StartingMinute="1" StartingSecond="0"                           
+                           StartingHour="0" StartingMinute="1" StartingSecond="0" OnStartWarning="{Binding StartWarningCommmand}"                           
                            ClockFontAttributes="Bold" ClockFontSize="22"/>
             <Button x:Name="btnStartStopFTX3" Text="Start" Clicked="btnStartStop_Clicked"></Button>
         </StackLayout>        
@@ -63,7 +63,7 @@
             <ftimer:FrameTimer x:Name="frtTimer5" Grid.Row="1" Grid.Column="1" BorderColor="Brown" CornerRadius="35" HasShadow="True" 
                            HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="35" HeightRequest="35"
                            TickVelocity="800" TimerType="IntegerCounter" 
-                           StartingCounter="30" StartWarningCount="10" 
+                           StartingCounter="40" StartWarningCount="10" 
                            IsAutoStarted="True" IsCountDown="True" WarningColor="LightYellow"
                            ClockFontAttributes="Bold" ClockFontSize="22" ClockFontTextColor="Brown"/>
             <Button x:Name="btnStartStopFTX5" Text="Stop" Clicked="btnStartStop_Clicked"></Button>

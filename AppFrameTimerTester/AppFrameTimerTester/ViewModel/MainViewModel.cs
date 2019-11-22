@@ -14,6 +14,7 @@ namespace AppFrameTimerTester.ViewModel
             StopCommand = new Command(StopTimer);
             StartCommand = new Command(StartTimer);
             ResumeCommand = new Command(ResumeTimer);
+            StartWarningCommmand = new Command(StartWarning);
             WarningColor1 = Color.Gold;
             Velocity = 500;
         }
@@ -45,6 +46,13 @@ namespace AppFrameTimerTester.ViewModel
         public Command StartCommand { get; }
 
         public Command ResumeCommand { get; }
+
+        public Command StartWarningCommmand { get; }
+
+        public void StartWarning()
+        {
+            Debug.WriteLine("########### Warning Started! ###########");
+        }
 
         public void StopTimer()
         {

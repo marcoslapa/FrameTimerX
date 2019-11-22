@@ -105,7 +105,11 @@ namespace FrameTimerX
                 LineBreakMode = LineBreakMode.NoWrap,
             };
             this.Content = _innerLabel;
+            
+            // Default format Hour:Min:Sec
             this.TimerType = TimerFormats.HourMinuteSecond;
+            this.timerStrategy = new HourMinSecStrategy();
+            
             this.AllowNegativeValues = false;
             this.ClockFontNegaviteTextColor = Color.Red;
             Application.Current.PageAppearing += Current_PageAppearing;

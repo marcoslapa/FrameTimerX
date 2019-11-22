@@ -73,8 +73,7 @@ FrameTimerX has the **Started**, **Stopped**, **Resumed** and **WarningStarted**
  **XAML File**
 ```xml
         <frt:FrameTimer StartingCounter="0" TickVelocity="500" Stopped="FrtTimer_Stopped"
-                        IsAutoStarted="True" TimerType="IntegerCounter" 
-                        HorizontalOptions="Center" VerticalOptions="Center" />
+                        IsAutoStarted="True" TimerType="IntegerCounter" />
 ```
 
 **CS File**
@@ -83,14 +82,40 @@ FrameTimerX has the **Started**, **Stopped**, **Resumed** and **WarningStarted**
         {
             Debug.WriteLine("=======================================================");
             Debug.WriteLine("========== Simple Stopped Event raised!!!!! ===========");
-            Debug.WriteLine($"| Starting Counter:{args.Counter} |");
-            Debug.WriteLine($"| Starting Hour:{args.Hour} |");
-            Debug.WriteLine($"| Starting Minute:{args.Minute} |");
-            Debug.WriteLine($"| Starting Second:{args.Second} |");
+            Debug.WriteLine($"| Counter:{args.Counter} |");
+            Debug.WriteLine($"| Hour:{args.Hour} |");
+            Debug.WriteLine($"| Minute:{args.Minute} |");
+            Debug.WriteLine($"| Second:{args.Second} |");
             Debug.WriteLine("=======================================================");
         }
 ```
 
+### MVVM sample (Command)
+
+ Handling the WarningStarted event
+ 
+ **XAML File**
+```xml
+        <ftimer:FrameTimer StartingCounter="90" TickVelocity="1000" TimerType="IntegerCounter"
+                           EnableWarning="True" StartWarningTime="30"
+                           WarningColor="Orange" IsCountDown="True" 
+                           OnStartWarning="{Binding StartWarningCommmand} />
+```
+
+**CS File => ViewModel**
+```cs
+        // Constructor
+        public MyViewModel(){
+            StartWarningCommmand = new Command(StartWarning);
+        }
+        
+        public Command StartWarningCommmand { get; }
+
+        public void StartWarning()
+        {
+            Debug.WriteLine("########### Warning Started! ###########");
+        }
+```
 
 ---
 ### Known Issues

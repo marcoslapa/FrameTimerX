@@ -61,6 +61,33 @@ A cross-platform Timer that runs inside a Xamarin.Forms.Frame
                         IsCountDown="True" IsAutoStarted="True" TimerType="IntegerCounter" 
                         StartWarningCount="10" HorizontalOptions="Center" VerticalOptions="Center" />
 ```
+
+## Handling Events
+
+FrameTimerX has the **Started**, **Stopped**, **Resumed** and **WarningStarted** events to handle. We can use the **CodeBehind** or **MVVM** (Command) aproach. 
+
+# CodeBehind sample
+
+ 1. Handling the Stopped event
+```xml
+        <frt:FrameTimer StartingCounter="0" TickVelocity="500" Stopped="FrtTimer_Stopped"
+                        IsAutoStarted="True" TimerType="IntegerCounter" 
+                        HorizontalOptions="Center" VerticalOptions="Center" />
+```
+```cs
+        private void FrtTimer_Stopped(object sender, FrameTimerEventArgs args)
+        {
+            Debug.WriteLine("=======================================================");
+            Debug.WriteLine("========== Simple Stopped Event raised!!!!! ===========");
+            Debug.WriteLine($"| Starting Counter:{args.Counter} |");
+            Debug.WriteLine($"| Starting Hour:{args.Hour} |");
+            Debug.WriteLine($"| Starting Minute:{args.Minute} |");
+            Debug.WriteLine($"| Starting Second:{args.Second} |");
+            Debug.WriteLine("=======================================================");
+        }
+```
+
+
 ---
 ### Known Issues
 

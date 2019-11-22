@@ -1,4 +1,4 @@
-# FrameTimerX
+# FrameTimerX v1.0.1
 **Author**: Marcos Lapa dos Santos
 
 A cross-platform Timer that runs inside a Xamarin.Forms.Frame
@@ -64,7 +64,7 @@ A cross-platform Timer that runs inside a Xamarin.Forms.Frame
 ---
 ### Known Issues
 
- - Don't try to start a FrameTimerX on your **page's constructor** or **OnAppearing event**, use the **AutoStart** property instead.
+ - **FIXED on v1.0.1**: Don't try to start a FrameTimerX on your **page's constructor** or **OnAppearing event**, use the **AutoStart** property instead.
  - We can't put any componente inside the **FrameTimer**, because it'll became a simple Frame. 
  For example, if we do something like this:
  ```xml

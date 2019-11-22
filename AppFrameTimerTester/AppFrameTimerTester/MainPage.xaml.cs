@@ -18,7 +18,18 @@ namespace AppFrameTimerTester
         public MainPage()
         {
             InitializeComponent();
-        } 
+            frtTimer2.Started += FrtTimer_Started;
+        }
+
+        private void FrtTimer_Started(object sender, FrameTimerEventArgs args)
+        {
+            Debug.WriteLine("@@@@@@@@@@@@@@@@@@ Simple Started Event raised!!!!! @@@@@@@@@@@@@@@@@@@");
+            Debug.WriteLine($"@@@@@@@@@@@@@@@@@@ Starting Counter:{args.Counter} @@@@@@@@@@@@@@@@@@@");
+            Debug.WriteLine($"@@@@@@@@@@@@@@@@@@ Starting Hour:{args.Hour} @@@@@@@@@@@@@@@@@@@");
+            Debug.WriteLine($"@@@@@@@@@@@@@@@@@@ Starting Minute:{args.Minute} @@@@@@@@@@@@@@@@@@@");
+            Debug.WriteLine($"@@@@@@@@@@@@@@@@@@ Starting Second:{args.Second} @@@@@@@@@@@@@@@@@@@");
+
+        }
 
         private void btnStartStop_Clicked(object sender, EventArgs e)
         {

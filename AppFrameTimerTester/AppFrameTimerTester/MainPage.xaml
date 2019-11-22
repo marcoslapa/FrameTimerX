@@ -25,7 +25,7 @@
         <StackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center">
             <Label Text="Default" FontSize="Medium" FontAttributes="Bold" LineBreakMode="WordWrap" HorizontalTextAlignment="Center" />
             <ftimer:FrameTimer x:Name="frtTimer1" Grid.Row="0" Grid.Column="1"
-                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                           HorizontalOptions="Center" VerticalOptions="Center" Started="FrtTimer_Started"/>
             <Button x:Name="btnStartStopFTX1" Text="Start" Clicked="btnStartStop_Clicked"></Button>
         </StackLayout>
         <StackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center">

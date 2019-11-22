@@ -22,16 +22,16 @@ namespace FrameTimerX
         public override void Resume(FrameTimer ft)
         {
             ft.timerStopped = false;
-            if (ft.OnResume != null)
-            {
-                ft.Resumed(new FrameTimerEventArgs
-                {
-                    Hour = ft._innerTime.Hour,
-                    Minute = ft._innerTime.Minute,
-                    Second = ft._innerTime.Second
-                });
-            }
-
+            ft.RaiseResumedEvent();
+            //if (ft.OnResume != null)
+            //{
+            //    ft.TimerResumed(new FrameTimerEventArgs
+            //    {
+            //        Hour = ft._innerTime.Hour,
+            //        Minute = ft._innerTime.Minute,
+            //        Second = ft._innerTime.Second
+            //    });
+            //}
         }
 
         public override void Start(FrameTimer ft)
@@ -41,18 +41,20 @@ namespace FrameTimerX
             {
                 ft._defaultColor = ft.BackgroundColor;
 
-                // Raise the Started event!
-                FrameTimerEventArgs args = new FrameTimerEventArgs { 
-                    Hour = ft.StartingHour, 
-                    Minute = ft.StartingMinute, 
-                    Second = ft.StartingSecond 
-                };
+                ft.RaiseStartedEvent();
 
-                // Raises the Started event
-                if(ft.OnStart != null)
-                {                    
-                    ft.Started(args);
-                }
+                //// Raise the Started event!
+                //FrameTimerEventArgs args = new FrameTimerEventArgs { 
+                //    Hour = ft.StartingHour, 
+                //    Minute = ft.StartingMinute, 
+                //    Second = ft.StartingSecond 
+                //};
+
+                //// Raises the Started bindable event
+                //if(ft.OnStart != null)
+                //{                    
+                //    ft.TimerStarted(args);
+                //}
 
                 Device.StartTimer(ft.GetVelocity(), () => {
 
@@ -73,8 +75,9 @@ namespace FrameTimerX
                         && ft._innerTime.Second == 0)
                     {
                         ft.timerStopped = true;
-                        if (ft.OnStop != null)
-                            ft.Stopped(new FrameTimerEventArgs { Hour = 0, Minute = 0, Second = 0 });
+                        ft.RaiseStoppedEvent();
+                        //if (ft.OnStop != null)
+                        //    ft.TimerStopped(new FrameTimerEventArgs { Hour = 0, Minute = 0, Second = 0 });
                     }
 
                     if (!ft.timerStopped)
@@ -86,14 +89,15 @@ namespace FrameTimerX
                             {
                                 // First time Warning!
                                 ft._warningStarted = true;
+                                ft.RaiseWarningStartedEvent();
 
-                                if (ft.OnStartWarning != null)
-                                    ft.WarningStarted(new FrameTimerEventArgs
-                                    {
-                                        Hour = ft._innerTime.Hour,
-                                        Minute = ft._innerTime.Minute,
-                                        Second = ft._innerTime.Second
-                                    });
+                                //if (ft.OnStartWarning != null)
+                                //    ft.TimerWarningStarted(new FrameTimerEventArgs
+                                //    {
+                                //        Hour = ft._innerTime.Hour,
+                                //        Minute = ft._innerTime.Minute,
+                                //        Second = ft._innerTime.Second
+                                //    });
                             }
 
                             ft.ChangeWarningBackgourndColor();

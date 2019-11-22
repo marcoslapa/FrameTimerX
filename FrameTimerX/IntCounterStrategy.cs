@@ -14,23 +14,35 @@ namespace FrameTimerX
 
         public override void Resume(FrameTimer ft)
         {
-            if (ft._innerCount == 0)
-            {
-                if (ft.AllowNegativeValues)
-                    ft.timerStopped = false;
-            }
-            else
+
+            if (ft.AllowNegativeValues)
             {
                 ft.timerStopped = false;
             }
-
-            if (ft.OnResume != null && !ft.timerStopped)
+            else
             {
-                ft.Resumed(new FrameTimerEventArgs
-                {
-                    Counter = ft._innerCount
-                });
+                if (ft._innerCount > 0) ft.timerStopped = false;
             }
+
+            if (!ft.timerStopped) ft.RaiseResumedEvent();
+
+            //if (ft._innerCount == 0)
+            //{
+            //    if (ft.AllowNegativeValues)
+            //        ft.timerStopped = false;
+            //}
+            //else
+            //{
+            //    ft.timerStopped = false;
+            //}
+
+            //if (ft.OnResume != null && !ft.timerStopped)
+            //{
+            //    ft.TimerResumed(new FrameTimerEventArgs
+            //    {
+            //        Counter = ft._innerCount
+            //    });
+            //}
 
         }
 
@@ -42,9 +54,10 @@ namespace FrameTimerX
                 ft._defaultColor = ft.BackgroundColor;
 
                 // Raise the Started event!
-                FrameTimerEventArgs args;
-                args = new FrameTimerEventArgs { Counter = ft.StartingCounter };
-                if(ft.OnStart!=null) ft.Started(args);
+                ft.RaiseStartedEvent();
+                //FrameTimerEventArgs args;
+                //args = new FrameTimerEventArgs { Counter = ft.StartingCounter };
+                //if(ft.OnStart!=null) ft.TimerStarted(args);
                 
                 Device.StartTimer(ft.GetVelocity(), () => {
                     // Verify if it has to continue increasing or decreasing the values
@@ -69,8 +82,9 @@ namespace FrameTimerX
                     if (ft.IsCountDown && !ft.AllowNegativeValues && ft._innerCount == 0)
                     {
                         ft.timerStopped = true;
-                        if (ft.OnStop != null)
-                            ft.Stopped(new FrameTimerEventArgs { Counter = 0 });
+                        ft.RaiseStoppedEvent();
+                        //if (ft.OnStop != null)
+                        //    ft.TimerStopped(new FrameTimerEventArgs { Counter = 0 });
                     }
 
                     if (!ft.timerStopped)
@@ -83,11 +97,13 @@ namespace FrameTimerX
                             {
                                 // First time Warning!
                                 ft._warningStarted = true;
-                                if (ft.OnStartWarning != null)
-                                    ft.WarningStarted(new FrameTimerEventArgs
-                                    {
-                                        Counter = ft.StartWarningCount
-                                    });
+                                ft.RaiseWarningStartedEvent();
+
+                                //if (ft.OnStartWarning != null)
+                                //    ft.TimerWarningStarted(new FrameTimerEventArgs
+                                //    {
+                                //        Counter = ft.StartWarningCount
+                                //    });
                             }
 
                             ft.ChangeWarningBackgourndColor();

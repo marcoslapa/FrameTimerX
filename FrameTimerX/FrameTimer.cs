@@ -14,6 +14,24 @@ namespace FrameTimerX
 
         private TimerStrategyAb timerStrategy;
 
+        #region Simple Events
+        //Started Event
+        public delegate void StartedEventHandler(object sender, FrameTimerEventArgs args);
+        public event StartedEventHandler Started;
+
+        //Stopped Event
+        public delegate void StoppedEventHandler(object sender, FrameTimerEventArgs args);
+        public event StoppedEventHandler Stopped;
+
+        //Resumed Event
+        public delegate void ResumedEventHandler(object sender, FrameTimerEventArgs args);
+        public event ResumedEventHandler Resumed;
+
+        //WarningStarted Event
+        public delegate void WarningStartedEventHandler(object sender, FrameTimerEventArgs args);
+        public event WarningStartedEventHandler WarningStarted;
+        #endregion
+
         #region Bindable Events (Commands)
         // Defining the timer bindable events 
         public delegate void TimerHandler(object sender, FrameTimerEventArgs evt);
@@ -51,25 +69,25 @@ namespace FrameTimerX
             set { SetValue(OnResumeProperty, value); }
         }
 
-        internal virtual void WarningStarted(FrameTimerEventArgs e)
+        internal virtual void TimerWarningStarted(FrameTimerEventArgs e)
         {
             // ----- Event handler for value changes.
             OnStartWarning?.Execute(e);
         }
 
-        internal virtual void Stopped(FrameTimerEventArgs e)
+        internal virtual void TimerStopped(FrameTimerEventArgs e)
         {
             // ----- Event handler for value changes.
             OnStop?.Execute(e);
         }
 
-        internal virtual void Resumed(FrameTimerEventArgs e)
+        internal virtual void TimerResumed(FrameTimerEventArgs e)
         {
             // ----- Event handler for value changes.
             OnResume?.Execute(e);
         }
 
-        internal virtual void Started(FrameTimerEventArgs e)
+        internal virtual void TimerStarted(FrameTimerEventArgs e)
         {
             // ----- Event handler for value changes.
             OnStart?.Execute(e);
@@ -358,8 +376,7 @@ namespace FrameTimerX
         public void Stop()
         {
             this.timerStopped = true;
-            if (this.OnStop != null)
-                Stopped(new FrameTimerEventArgs { Counter = 0 });
+            RaiseStoppedEvent();
         }
 
         internal bool alreadyStarted = false;
@@ -367,7 +384,83 @@ namespace FrameTimerX
 
         public void Start()
         {
-            this.timerStrategy.Start(this);
+            this.timerStrategy.Start(this);           
+        }
+
+        internal void RaiseStoppedEvent()
+        {
+            FrameTimerEventArgs args = new FrameTimerEventArgs
+            {
+                Counter = this._innerCount,
+                Hour = this._innerTime.Hour,
+                Minute = this._innerTime.Minute,
+                Second = this._innerTime.Second
+            };
+
+            // Raise bindable event
+            if (this.OnStop != null)
+                TimerStopped(args);
+
+            //Raise simple event
+            if (this.Stopped != null)
+                Stopped(this, args);
+        }
+
+        internal void RaiseResumedEvent()
+        {
+            FrameTimerEventArgs args = new FrameTimerEventArgs
+            {
+                Counter = this._innerCount,
+                Hour = this._innerTime.Hour,
+                Minute = this._innerTime.Minute,
+                Second = this._innerTime.Second
+            };
+
+            // Raise bindable event
+            if (this.OnResume != null)
+                TimerResumed(args);
+
+            //Raise simple event
+            if (this.Resumed != null)
+                Resumed(this, args);
+        }
+
+        internal void RaiseStartedEvent()
+        {
+            FrameTimerEventArgs args = new FrameTimerEventArgs
+            {
+                Counter = this.StartingCounter,
+                Hour = this.StartingHour,
+                Minute = this.StartingMinute,
+                Second = this.StartingSecond
+            };
+
+            // Raise bindable event
+            if (this.OnStart != null)
+                TimerStarted(args);
+
+            //Raise simple event
+            if (this.Started != null)
+                Started(this, args);
+        }
+
+        internal void RaiseWarningStartedEvent()
+        {
+            FrameTimerEventArgs args = new FrameTimerEventArgs
+            {
+                Counter = this._innerCount,
+                Hour = this._innerTime.Hour,
+                Minute = this._innerTime.Minute,
+                Second = this._innerTime.Second
+            };
+
+            // Raise bindable event
+            if (this.OnStartWarning != null)
+                TimerWarningStarted(args);
+
+            //Raise simple event
+            if (this.WarningStarted != null)
+                WarningStarted(this, args);
         }
 
         internal bool IsWarningTime(int timerValue)

@@ -8,7 +8,7 @@
     <Version>1.0.0</Version>
     <Description>FrameTimerX is a cross-platform Timer that runs inside a Xamarin Forms Frame.</Description>
     <Copyright>Marcos Lapa dos Santos</Copyright>
-    <PackageTags>timer frametimer counter XDevTeam</PackageTags>
+    <PackageTags>timer frametimer counter countdown frame XDevTeam</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl></PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

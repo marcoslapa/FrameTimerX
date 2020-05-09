@@ -12,12 +12,18 @@ namespace FrameTimerX
         internal DateTime _innerTime;
         internal int _innerCount;
 
+        bool alreadyAppeared = false;
+
         private TimerStrategyAb timerStrategy;
 
         #region Simple Events
         //Started Event
         public delegate void StartedEventHandler(object sender, FrameTimerEventArgs args);
         public event StartedEventHandler Started;
+
+        //Paused Event
+        public delegate void PausedEventHandler(object sender, FrameTimerEventArgs args);
+        public event PausedEventHandler Paused;
 
         //Stopped Event
         public delegate void StoppedEventHandler(object sender, FrameTimerEventArgs args);
@@ -53,6 +59,14 @@ namespace FrameTimerX
             set { SetValue(OnStartWarningProperty, value); }
         }
 
+        public static readonly BindableProperty OnPauseProperty =
+        BindableProperty.Create(nameof(OnPause), typeof(ICommand), typeof(FrameTimer), default(ICommand));
+
+        public ICommand OnPause {
+            get { return (ICommand)GetValue(OnPauseProperty); }
+            set { SetValue(OnPauseProperty, value); }
+        }
+
         public static readonly BindableProperty OnStopProperty =
             BindableProperty.Create(nameof(OnStop), typeof(ICommand), typeof(FrameTimer), default(ICommand));
 
@@ -79,6 +93,12 @@ namespace FrameTimerX
         {
             // ----- Event handler for value changes.
             OnStop?.Execute(e);
+        }
+
+        internal virtual void TimerPaused(FrameTimerEventArgs e)
+        {
+            // ----- Event handler for value changes.
+            OnPause?.Execute(e);
         }
 
         internal virtual void TimerResumed(FrameTimerEventArgs e)
@@ -112,6 +132,7 @@ namespace FrameTimerX
             
             this.AllowNegativeValues = false;
             this.ClockFontNegaviteTextColor = Color.Red;
+
             Application.Current.PageAppearing += Current_PageAppearing;
         }
 
@@ -122,10 +143,16 @@ namespace FrameTimerX
                 this.timerStrategy = new IntCounterStrategy();
             else 
                 this.timerStrategy = new HourMinSecStrategy();
-            
+
             // Init Timer
-            ResetClockOrCounter();
-            if (IsAutoStarted) this.Start();
+           
+            if (this._resetTimerOnAppearing) 
+                ResetClockOrCounter();
+            else 
+                InitClockOrCounter();
+
+            //if (IsAutoStarted) 
+            //    this.Start(); // Starts or Resumes the timer
         }
         #endregion
 
@@ -185,6 +212,19 @@ namespace FrameTimerX
             control.TickVelocity = (int)newValue;
         }
         #endregion
+
+        bool _resetTimerOnAppearing = false;
+        /// <summary>
+        /// Defines if the Timer should reset on Page Appearing event
+        /// </summary>
+        public bool ResetTimerOnAppearing {
+            get {
+                return this._resetTimerOnAppearing;
+            }
+            set {
+                this._resetTimerOnAppearing = value;
+            }
+        }
 
         /// <summary>
         /// Defines the Clock's FontSize
@@ -306,6 +346,7 @@ namespace FrameTimerX
             }
             set {
                 _startingIntegerCounter = value;
+                ResetClockOrCounter();
             }
         }
 
@@ -320,6 +361,7 @@ namespace FrameTimerX
                 // Validate until 59 secs
                 if (value >= 0 && value < 60) _startingSec = value;
                 else _startingSec = 0;
+                ResetClockOrCounter();
             }
         }
 
@@ -334,6 +376,7 @@ namespace FrameTimerX
                 // Validate until 59 secs
                 if (value >= 0 && value < 60) _startingMinute = value;
                 else _startingMinute = 0;
+                ResetClockOrCounter();
             }
         }
 
@@ -348,6 +391,7 @@ namespace FrameTimerX
                 // Validate negative hours
                 if (value >= 0) _startingHour = value;
                 else _startingHour = 0;
+                ResetClockOrCounter();
             }
         }
 
@@ -375,12 +419,23 @@ namespace FrameTimerX
         internal bool _warningStarted = false;
 
         /// <summary>
-        /// Stops the timer, and rises the Stopped event
+        /// Stops the timer, reset the clock/counter and rises the Stopped event
         /// </summary>
         public void Stop()
         {
             this.timerStopped = true;
+            ResetClockOrCounter();
             RaiseStoppedEvent();
+        }
+
+
+        /// <summary>
+        /// Pauses the timer, and rises the Paused event
+        /// </summary>
+        public void Pause()
+        {
+            this.timerStopped = true;
+            RaisePausedEvent();
         }
 
         internal bool alreadyStarted = false;
@@ -391,6 +446,7 @@ namespace FrameTimerX
             this.timerStrategy.Start(this);           
         }
 
+        #region Raise Events
         internal void RaiseStoppedEvent()
         {
             FrameTimerEventArgs args = new FrameTimerEventArgs
@@ -408,6 +464,25 @@ namespace FrameTimerX
             //Raise simple event
             if (this.Stopped != null)
                 Stopped(this, args);
+        }
+
+        internal void RaisePausedEvent()
+        {
+            FrameTimerEventArgs args = new FrameTimerEventArgs
+            {
+                Counter = this._innerCount,
+                Hour = this._innerTime.Hour,
+                Minute = this._innerTime.Minute,
+                Second = this._innerTime.Second
+            };
+
+            // Raise bindable event
+            if (this.OnPause != null)
+                TimerPaused(args);
+
+            //Raise simple event
+            if (this.Paused != null)
+                Paused(this, args);
         }
 
         internal void RaiseResumedEvent()
@@ -466,6 +541,7 @@ namespace FrameTimerX
             if (this.WarningStarted != null)
                 WarningStarted(this, args);
         }
+        #endregion
 
         internal bool IsWarningTime(int timerValue)
         {
@@ -483,7 +559,7 @@ namespace FrameTimerX
             return isWarningTime;
         }
 
-        internal void ChangeWarningBackgourndColor()
+        internal void ChangeWarningBackgroundColor()
         {
             if (timerStopped)
                 this.BackgroundColor = WarningColor;
@@ -507,12 +583,31 @@ namespace FrameTimerX
             }            
         }
 
+        protected void InitClockOrCounter()
+        {
+            // Calls Init only once
+            if (!alreadyAppeared)
+            {
+                this.timerStrategy.InitTimer(this);
+                this._innerLabel.Text = GetTimerString();
+                if (IsAutoStarted)
+                    this.Start(); // Starts or Resumes the timer
+                alreadyAppeared = true;
+            }
+        }
+
         protected void ResetClockOrCounter()
         {
             this.timerStrategy.ResetClockOrCounter(this);
 
             this._warningStarted = false;
             this._innerLabel.Text = GetTimerString();
+            if (!alreadyAppeared && IsAutoStarted)
+            {
+                this.Start();
+                alreadyAppeared = true;
+            }
+                
         }
 
         internal TimeSpan GetVelocity()

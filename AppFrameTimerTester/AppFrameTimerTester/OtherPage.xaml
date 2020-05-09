@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="AppFrameTimerTester.OtherPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Button x:Name="SetTo1_30" Text="Set to 1m30s"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" Clicked="SetTo1_30_Clicked" />
+            <Button x:Name="SetTo2_15" Text="Set to 2m15s"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" Clicked="SetTo2_15_Clicked" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

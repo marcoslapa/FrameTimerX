@@ -11,5 +11,7 @@ namespace FrameTimerX
         public abstract void Start(FrameTimer ft);
 
         public abstract void ResetClockOrCounter(FrameTimer ft);
+
+        public abstract void InitTimer(FrameTimer ft);
     }
 }

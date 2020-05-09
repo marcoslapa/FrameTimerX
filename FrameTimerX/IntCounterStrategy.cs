@@ -7,9 +7,14 @@ namespace FrameTimerX
 {
     public class IntCounterStrategy : TimerStrategyAb
     {
-        public override void ResetClockOrCounter(FrameTimer ft)
+        public override void InitTimer(FrameTimer ft)
         {
             ft._innerCount = ft.StartingCounter;
+        }
+
+        public override void ResetClockOrCounter(FrameTimer ft)
+        {
+            InitTimer(ft);
         }
 
         public override void Resume(FrameTimer ft)
@@ -25,39 +30,17 @@ namespace FrameTimerX
             }
 
             if (!ft.timerStopped) ft.RaiseResumedEvent();
-
-            //if (ft._innerCount == 0)
-            //{
-            //    if (ft.AllowNegativeValues)
-            //        ft.timerStopped = false;
-            //}
-            //else
-            //{
-            //    ft.timerStopped = false;
-            //}
-
-            //if (ft.OnResume != null && !ft.timerStopped)
-            //{
-            //    ft.TimerResumed(new FrameTimerEventArgs
-            //    {
-            //        Counter = ft._innerCount
-            //    });
-            //}
-
         }
 
         public override void Start(FrameTimer ft)
         {
-            // Starts only once
+            // Starts de Device Timer only once
             if (!ft.alreadyStarted)
             {
                 ft._defaultColor = ft.BackgroundColor;
 
                 // Raise the Started event!
                 ft.RaiseStartedEvent();
-                //FrameTimerEventArgs args;
-                //args = new FrameTimerEventArgs { Counter = ft.StartingCounter };
-                //if(ft.OnStart!=null) ft.TimerStarted(args);
                 
                 Device.StartTimer(ft.GetVelocity(), () => {
                     // Verify if it has to continue increasing or decreasing the values
@@ -83,8 +66,6 @@ namespace FrameTimerX
                     {
                         ft.timerStopped = true;
                         ft.RaiseStoppedEvent();
-                        //if (ft.OnStop != null)
-                        //    ft.TimerStopped(new FrameTimerEventArgs { Counter = 0 });
                     }
 
                     if (!ft.timerStopped)
@@ -98,15 +79,9 @@ namespace FrameTimerX
                                 // First time Warning!
                                 ft._warningStarted = true;
                                 ft.RaiseWarningStartedEvent();
-
-                                //if (ft.OnStartWarning != null)
-                                //    ft.TimerWarningStarted(new FrameTimerEventArgs
-                                //    {
-                                //        Counter = ft.StartWarningCount
-                                //    });
                             }
 
-                            ft.ChangeWarningBackgourndColor();
+                            ft.ChangeWarningBackgroundColor();
                         }
                     }
 
@@ -116,6 +91,11 @@ namespace FrameTimerX
 
                     return true;
                 });
+            }
+            else
+            {
+                // Allows to resume a timer started before  
+                Resume(ft);
             }
         }
     }

@@ -7,7 +7,7 @@ namespace FrameTimerX
 {
     public class HourMinSecStrategy : TimerStrategyAb
     {
-        public override void ResetClockOrCounter(FrameTimer ft)
+        public override void InitTimer(FrameTimer ft)
         {
             ft._innerTime = new DateTime(
                 DateTime.Now.Year,
@@ -19,42 +19,25 @@ namespace FrameTimerX
             );
         }
 
+        public override void ResetClockOrCounter(FrameTimer ft)
+        {
+            InitTimer(ft);
+        }
+
         public override void Resume(FrameTimer ft)
         {
             ft.timerStopped = false;
             ft.RaiseResumedEvent();
-            //if (ft.OnResume != null)
-            //{
-            //    ft.TimerResumed(new FrameTimerEventArgs
-            //    {
-            //        Hour = ft._innerTime.Hour,
-            //        Minute = ft._innerTime.Minute,
-            //        Second = ft._innerTime.Second
-            //    });
-            //}
         }
 
         public override void Start(FrameTimer ft)
         {
-            // Starts only once
+            // Starts the Device Timer only once
             if (!ft.alreadyStarted)
             {
                 ft._defaultColor = ft.BackgroundColor;
 
                 ft.RaiseStartedEvent();
-
-                //// Raise the Started event!
-                //FrameTimerEventArgs args = new FrameTimerEventArgs { 
-                //    Hour = ft.StartingHour, 
-                //    Minute = ft.StartingMinute, 
-                //    Second = ft.StartingSecond 
-                //};
-
-                //// Raises the Started bindable event
-                //if(ft.OnStart != null)
-                //{                    
-                //    ft.TimerStarted(args);
-                //}
 
                 Device.StartTimer(ft.GetVelocity(), () => {
 
@@ -76,8 +59,6 @@ namespace FrameTimerX
                     {
                         ft.timerStopped = true;
                         ft.RaiseStoppedEvent();
-                        //if (ft.OnStop != null)
-                        //    ft.TimerStopped(new FrameTimerEventArgs { Hour = 0, Minute = 0, Second = 0 });
                     }
 
                     if (!ft.timerStopped)
@@ -90,17 +71,9 @@ namespace FrameTimerX
                                 // First time Warning!
                                 ft._warningStarted = true;
                                 ft.RaiseWarningStartedEvent();
-
-                                //if (ft.OnStartWarning != null)
-                                //    ft.TimerWarningStarted(new FrameTimerEventArgs
-                                //    {
-                                //        Hour = ft._innerTime.Hour,
-                                //        Minute = ft._innerTime.Minute,
-                                //        Second = ft._innerTime.Second
-                                //    });
                             }
 
-                            ft.ChangeWarningBackgourndColor();
+                            ft.ChangeWarningBackgroundColor();
                         }
                     }
 
@@ -110,6 +83,11 @@ namespace FrameTimerX
 
                     return true;
                 });
+            }
+            else
+            {
+                // Allows to resume a timer started before  
+                Resume(ft);
             }
         }
     }

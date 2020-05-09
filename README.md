@@ -1,4 +1,4 @@
-# FrameTimerX v1.0.1
+# FrameTimerX v1.0.2
 **Author**: Marcos Lapa dos Santos
 
 A cross-platform Timer that runs inside a Xamarin.Forms.Frame
@@ -119,9 +119,13 @@ FrameTimerX has the **Started**, **Stopped**, **Resumed** and **WarningStarted**
 ```
 
 ---
+### Added Features
+- ResetTimerOnAppearing property: Now you can choose if your timer resets on PageAppearing or not.
+- Pause method and event (now the Stop method resets the timer)
+
+---
 ### Known Issues
 
- - **FIXED on v1.0.1**: Don't try to start a FrameTimerX on your **page's constructor** or **OnAppearing event**, use the **AutoStart** property instead.
  - We can't put any componente inside the **FrameTimer**, because it'll became a simple Frame. 
  For example, if we do something like this:
  ```xml
